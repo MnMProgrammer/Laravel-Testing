@@ -4,6 +4,8 @@ namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+
+use Session;
 use Tests\TestCase;
 
 class ProjectsTest extends TestCase
@@ -13,23 +15,30 @@ class ProjectsTest extends TestCase
     /** @test */
     public function a_user_can_create_a_project()
     {
-
         // Whenever an exception is thrown provide the full details
         $this->withoutExceptionHandling();
 
-        $attributes = [
-            'title' => $this->faker->sentence,
-            'description' => $this->faker->paragraph,
-            
+        $title = $this->faker->sentence;
+        $description = $this->faker->paragraph;
+
+        $tokenAttributes = [
+            '_token' => csrf_token(),
+            'title' => $title,
+            'description' => $description,
         ];
 
-        // Checking for a endpoint on the url
-        $this->post('/projects', $attributes);
+        $attributes = [
+            'title' => $title,
+            'description' => $description,
+        ];
 
-        // Checking for a database, table and columns 
+        // Checking for a endpoint on the url and checking redirect
+        $this->post('/projects', $tokenAttributes)->assertRedirect('/projects');
+
+        // Checking for a database, table, columns, and inserted values
         $this->assertDatabaseHas('projects', $attributes);
 
-        // If I make a get request to this url then I check that I can see the following attribute
+        // Checking url for a get request then check that the following attribute is reachable
         $this->get('/projects')->assertSee($attributes['title']);
     }
 }

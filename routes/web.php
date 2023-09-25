@@ -17,13 +17,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/projects', 'App\Http\Controllers\ProjectsController@index');
 
-Route::post('/projects', function () {
-    
-    // validate 
 
-    // persist
-    App\Models\Project::create(request(['title', 'description']));
-
-    // redirect
-});
+Route::post('/projects', 'App\Http\Controllers\ProjectsController@store');
