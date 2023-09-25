@@ -7,6 +7,7 @@ use Illuminate\Foundation\Testing\WithFaker;
 
 use Session;
 use Tests\TestCase;
+use App\Models\Project;
 
 class ProjectsTest extends TestCase
 {
@@ -40,5 +41,25 @@ class ProjectsTest extends TestCase
 
         // Checking url for a get request then check that the following attribute is reachable
         $this->get('/projects')->assertSee($attributes['title']);
+    }
+
+    /** @test */
+    public function a_project_requires_a_title()
+    {
+        // Going to the factory to get the fields and overriding the field to be blank
+        $atrributes = Project::factory('App\Models\Project')->raw(['title' => '']);
+
+        // Checking the post request to see if the follow field is passed, otherwise session has errors
+        $this->post('/projects', $atrributes)->assertSessionHasErrors('title');
+    }
+
+    /** @test */
+    public function a_project_requires_a_description()
+    {
+        // Going to the factory to get the fields and overriding the field to be blank
+        $atrributes = Project::factory('App\Models\Project')->raw(['description' => '']);
+
+        // Checking the post request to see if the follow field is passed, otherwise session has errors
+        $this->post('/projects', $atrributes)->assertSessionHasErrors('description');
     }
 }
