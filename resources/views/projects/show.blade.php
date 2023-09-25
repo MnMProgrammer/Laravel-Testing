@@ -19,19 +19,9 @@
     </head>
     <body class="antialiased">
 
-        <h1>PHP Unit Testing</h1>
+        <h1>{{ $project->title }}</h1>
 
-        <ul>
-
-            @forelse($projects as $project)
-                <li>
-                    <a href="{{ $project->path() }}">{{ $project->title }}</a>
-                </li>
-            @empty
-                <li>No projects added yet.</li>
-            @endforelse
-
-        </ul>
+        <div>{{ $project->description }}</div>
 
     </body>
 </html>

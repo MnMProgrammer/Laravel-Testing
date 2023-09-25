@@ -62,4 +62,19 @@ class ProjectsTest extends TestCase
         // Checking the post request to see if the follow field is passed, otherwise session has errors
         $this->post('/projects', $atrributes)->assertSessionHasErrors('description');
     }
+
+    /** @test */
+    public function a_user_can_view_a_project()
+    {
+        // Whenever an exception is thrown provide the full details
+        $this->withoutExceptionHandling();
+
+        // Creating a project
+        $project = Project::factory('App\Models\Project')->create();
+
+        // Confirming that on the project detail page that the fields are visiable 
+        $this->get($project->path())
+            ->assertSee($project->title)
+            ->assertSee($project->description);
+    }
 }
