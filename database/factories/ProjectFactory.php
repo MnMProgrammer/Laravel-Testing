@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\User;
 use App\Models\Project;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
@@ -11,6 +12,8 @@ use Illuminate\Support\Str;
  */
 class ProjectFactory extends Factory
 {
+    //protected $model = Project::class;
+
     /**
      * Define the model's default state.
      *
@@ -21,6 +24,9 @@ class ProjectFactory extends Factory
         return [
             'title' => fake()->sentence,
             'description' => fake()->paragraph,
+            'owner_id' => function() {
+                return factory(User::class)->create()->id;
+            }
         ];
     }
 }

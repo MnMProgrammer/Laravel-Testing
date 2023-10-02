@@ -3,11 +3,12 @@
 Filtering down to one test in a file
 ```
 vendor/bin/phpunit --filter a_project_requires_a_title
+ vendor/bin/phpunit tests/Feature/ProjectsTest.php --filter a_project_requires_a_description
 ````
 
 Running entire test suite 
 ```
-vendor/bin/phpunit tests/Feature/ProjectsTest/php
+vendor/bin/phpunit tests/Feature/ProjectsTest.php
 ```
 
 Refreshing migration (if new tables or columns added)

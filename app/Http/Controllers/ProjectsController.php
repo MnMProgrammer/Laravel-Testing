@@ -27,6 +27,9 @@ class ProjectsController extends Controller
             'description' => 'required'
         ]);
 
+        // More control over the id, allows for checks if someone tries to alter the request. Validation is now at the middlewear
+        $attributes['owner_id'] = auth()->id();
+
         // persist
         
         Project::create($attributes);
