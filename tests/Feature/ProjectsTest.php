@@ -66,11 +66,14 @@ class ProjectsTest extends TestCase
     /** @test */
     public function a_project_requires_an_owner()
     {
+        // Whenever an exception is thrown provide the full details
+        //$this->withoutExceptionHandling();
+
         // Going to the factory to get the fields and overriding the field to be blank
-        $atrributes = Project::factory('App\Models\Project')->raw(['owner_id' => null]);
+        $atrributes = Project::factory('App\Models\Project')->raw();
 
         // Checking the post request to see if the follow field is passed, otherwise session has errors
-        $this->post('/projects', $atrributes)->assertSessionHasErrors('owner_id');
+        $this->post('/projects', $atrributes)->assertRedirect('login');
     }
 
     /** @test */
