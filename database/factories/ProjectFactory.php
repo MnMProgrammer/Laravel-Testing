@@ -25,7 +25,8 @@ class ProjectFactory extends Factory
             'title' => fake()->sentence,
             'description' => fake()->paragraph,
             'owner_id' => function() {
-                return factory(User::class)->create()->id;
+                //return factory(User::class)->create()->id;
+                return User::factory()->create()->id;
             }
         ];
     }

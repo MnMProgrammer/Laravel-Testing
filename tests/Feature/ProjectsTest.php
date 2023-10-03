@@ -7,6 +7,7 @@ use Illuminate\Foundation\Testing\WithFaker;
 
 use Session;
 use Tests\TestCase;
+use App\Models\User;
 use App\Models\Project;
 
 class ProjectsTest extends TestCase
@@ -46,6 +47,13 @@ class ProjectsTest extends TestCase
     /** @test */
     public function a_project_requires_a_title()
     {
+        // Whenever an exception is thrown provide the full details
+        //$this->withoutExceptionHandling();
+
+        // Creating temp user to check test
+        $user = User::factory()->create();
+        $user = $this->actingAs($user); 
+
         // Going to the factory to get the fields and overriding the field to be blank
         $atrributes = Project::factory('App\Models\Project')->raw(['title' => '']);
 
@@ -64,15 +72,15 @@ class ProjectsTest extends TestCase
     }
 
     /** @test */
-    public function a_project_requires_an_owner()
+    public function only_auth_users_can_create_projects()
     {
         // Whenever an exception is thrown provide the full details
         //$this->withoutExceptionHandling();
 
         // Going to the factory to get the fields and overriding the field to be blank
-        $atrributes = Project::factory('App\Models\Project')->raw();
+        $atrributes = Project::factory('App\Models\Project')->raw(['owner_id' => null]);
 
-        // Checking the post request to see if the follow field is passed, otherwise session has errors
+        // Checking the the user and redirecting to login page if not authenticated
         $this->post('/projects', $atrributes)->assertRedirect('login');
     }
 
