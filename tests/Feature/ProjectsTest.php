@@ -26,36 +26,7 @@ class ProjectsTest extends TestCase
         // Checking the the user and redirecting to login page if not authenticated
         $this->post('/projects', $atrributes)->assertRedirect('login');
     }
-
-    /** @test */
-    public function a_user_can_create_a_project()
-    {
-        // Whenever an exception is thrown provide the full details
-        //$this->withoutExceptionHandling();
-
-        // Creating temp user to check test
-        $user = User::factory()->create();
-        $this->actingAs($user); 
-
-        //$this->withoutExceptionHandling();
-
-        $tokenAttributes = [
-            //'_token' => csrf_token(),
-            'title' => $this->faker->sentence,
-            'description' => $this->faker->paragraph,
-            //'owner_id' => '1'
-        ] ;
-
-        // Checking for a endpoint on the url and checking redirect
-        //$this->post('/projects', $tokenAttributes)->assertRedirect('/projects');
-
-        // Checking for a database, table, columns, and inserted values
-        //$this->assertDatabaseHas('projects', $tokenAttributes);
-
-        // // Checking url for a get request then check that the following attribute is reachable
-        // $this->get('/projects')->assertSee($attributes['title']);
-    }
-
+    
     /** @test */
     public function a_project_requires_a_title()
     {
