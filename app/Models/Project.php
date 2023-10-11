@@ -16,4 +16,9 @@ class Project extends Model
         // Allows dynamic construction of path
         return "/projects/{$this->id}";
     }
+
+    public function owner()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

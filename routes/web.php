@@ -19,13 +19,15 @@ Route::view('dashboard', 'dashboard')
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
 
-Route::view('profile', 'profile')
-    ->middleware(['auth'])
-    ->name('profile');
 
-Route::get('/projects', 'App\Http\Controllers\ProjectsController@index')->middleware(['auth'])->name('project.profile');
-Route::get('/projects/create', 'App\Http\Controllers\ProjectsController@create')->middleware(['auth'])->name('project.create');
-Route::get('/projects/{project}', 'App\Http\Controllers\ProjectsController@show')->middleware(['auth'])->name('project.show');
-Route::post('/projects', 'App\Http\Controllers\ProjectsController@store')->middleware(['auth'])->name('project.post');
+
+Route::group(['middleware' => 'auth'], function() {
+    Route::get('/projects', 'App\Http\Controllers\ProjectsController@index')->name('project.profile');
+    Route::get('/projects/create', 'App\Http\Controllers\ProjectsController@create')->name('project.create');
+    Route::get('/projects/{project}', 'App\Http\Controllers\ProjectsController@show')->name('project.show');
+    Route::post('/projects', 'App\Http\Controllers\ProjectsController@store')->name('project.post');
+    
+    Route::view('profile', 'profile')->name('profile');
+});
 
 require __DIR__.'/auth.php';

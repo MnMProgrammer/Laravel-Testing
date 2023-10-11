@@ -32,3 +32,11 @@ May need to run cache clear to get correct results from test
 php artisan config:clear
 php artisan optimize
 ```
+
+Tinker. To run command to create a project, user or other resources
+``` 
+php aritsan tinker
+User::factory()->create();
+Project::factory()->create();
+App\Models\Project::forceCreate(['title' => 'My Project', 'description' => 'New Description', 'owner_id' => 1]);
+```

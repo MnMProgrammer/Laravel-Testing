@@ -15,7 +15,7 @@ class ProjectsTest extends TestCase
     use WithFaker, RefreshDatabase;
 
     /** @test */
-    public function only_auth_users_can_create_projects()
+    public function guest_cannot_create_projects()
     {
         // Whenever an exception is thrown provide the full details
         //$this->withoutExceptionHandling();
@@ -26,7 +26,30 @@ class ProjectsTest extends TestCase
         // Checking the the user and redirecting to login page if not authenticated
         $this->post('/projects', $atrributes)->assertRedirect('login');
     }
-    
+
+    /** @test */
+    public function guest_cannot_view_projects()
+    {
+        // Whenever an exception is thrown provide the full details
+        //$this->withoutExceptionHandling();
+
+        // Checking if a non-authetnicated user can view projects
+        $this->get('/projects')->assertRedirect('login');
+    }
+
+    /** @test */
+    public function guest_cannot_view_a_single_projects()
+    {
+        // Whenever an exception is thrown provide the full details
+        //$this->withoutExceptionHandling();
+
+        // Creating a project
+        $project = Project::factory('App\Models\Project')->create();
+
+        // Checking if a non-authetnicated user can view projects
+        $this->get($project->path())->assertRedirect('login');
+    }
+
     /** @test */
     public function a_project_requires_a_title()
     {
@@ -60,21 +83,62 @@ class ProjectsTest extends TestCase
     }
 
     /** @test */
-    public function a_user_can_view_a_project()
+    public function a_user_can_view_their_project()
     {
+        // Creating temp user to check test
+        $this->be(User::factory()->create());
+
         // Whenever an exception is thrown provide the full details
         $this->withoutExceptionHandling();
 
-        // Creating temp user to check test
-        $user = User::factory()->create();
-        $user = $this->actingAs($user); 
-
         // Creating a project
-        $project = Project::factory('App\Models\Project')->create();
+        $project = Project::factory('App\Models\Project')->create(['owner_id' => auth()->id()]);
 
         // Confirming that on the project detail page that the fields are visiable 
         $this->get($project->path())
             ->assertSee($project->title)
             ->assertSee($project->description);
+    }
+
+     /** @test */
+    public function a_user_cannot_view_other_users_projects()
+    {
+        // Creating temp user to check test
+        $this->be(User::factory()->create());
+ 
+        // Whenever an exception is thrown provide the full details
+        //$this->withoutExceptionHandling();
+ 
+        // Creating a project
+        $project = Project::factory('App\Models\Project')->create();
+ 
+        // Confirming that on the project detail page that the fields are visiable 
+        $this->get($project->path())->assertStatus(403);
+    }
+
+    /** @test */
+    public function a_user_can_create_a_project()
+    {
+        // Creating temp user to check test
+        $this->be(User::factory()->create());
+
+        // Whenever an exception is thrown provide the full details
+        $this->withoutExceptionHandling();
+
+        $tokenAttributes = [
+            //'_token' => csrf_token(),
+            'title' => $this->faker->sentence,
+            'description' => $this->faker->paragraph,
+            'owner_id' => auth()->id()
+        ];
+
+        // Creating a project
+        $project = Project::factory('App\Models\Project')->create($tokenAttributes);
+
+        // Checking for a database, table, columns, and inserted values
+        $this->assertDatabaseHas('projects', $tokenAttributes);
+
+        // Checking url for a get request then check that the following attribute is reachable
+        $this->get('/projects')->assertSee($tokenAttributes['title']);
     }
 }
