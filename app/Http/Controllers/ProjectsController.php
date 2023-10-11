@@ -44,6 +44,6 @@ class ProjectsController extends Controller
 
         // redirect
         
-        return redirect('/projects');
+        //return redirect('/projects');
     }
 }

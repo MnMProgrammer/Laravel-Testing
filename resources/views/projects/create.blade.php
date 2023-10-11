@@ -33,14 +33,20 @@
                         <div class="scale-100 p-6 bg-white dark:bg-gray-800/50 dark:bg-gradient-to-bl from-gray-700/50 via-transparent dark:ring-1 dark:ring-inset dark:ring-white/5 rounded-lg shadow-2xl shadow-gray-500/20 dark:shadow-none flex motion-safe:hover:scale-[1.01] transition-all duration-250 focus:outline focus:outline-2 focus:outline-red-500">
                             <div>
 
-                                <h2 class="mt-6 text-xl font-semibold text-gray-900 dark:text-white">Create a Projects</h2>
+                                <h2 class="mt-6 text-xl font-semibold text-gray-900 dark:text-white">Create a Project</h2>
 
-                                <form method="POST" action="/your-endpoint">
-                                    @csrf
-                                    <input name="title" type="text" class="form-control">
-                                    <input name="description" type="text" class="form-control">
-                                    <input name="owner_id" type="hidden" class="form-control">
-                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                <form method="POST" action="{{ route('project.post') }}">
+                                    {{ csrf_field() }}
+
+                                    <div class="input-group mb-3">
+                                        <input type="text" class="form-control" aria-label="Default" style="padding: 13px;border: 1px solid grey;margin-bottom: 20px;margin-top: 20px;width: 245px;border-radius: 12px;" aria-describedby="inputGroup-sizing-default" name="title" placeholder="Title">
+                                    </div>
+
+                                    <div class="input-group mb-3">
+                                        <input type="text" class="form-control" aria-label="Default" style="padding: 13px;border: 1px solid grey;margin-bottom: 20px;margin-top: 20px;width: 245px;border-radius: 12px;" aria-describedby="inputGroup-sizing-default" name="title" placeholder="description">
+                                    </div>
+
+                                    <button type="submit" class="btn btn-primary" style="color: white; padding: 5px; width: 120px; background: blue;height: 45px;border-radius: 15px;">Submit</button>
                                 </form>
                             </div>
                         </div>

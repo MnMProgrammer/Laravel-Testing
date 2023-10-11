@@ -22,6 +22,7 @@ Route::view('dashboard', 'dashboard')
 
 
 Route::group(['middleware' => 'auth'], function() {
+    
     Route::get('/projects', 'App\Http\Controllers\ProjectsController@index')->name('project.profile');
     Route::get('/projects/create', 'App\Http\Controllers\ProjectsController@create')->name('project.create');
     Route::get('/projects/{project}', 'App\Http\Controllers\ProjectsController@show')->name('project.show');

@@ -10,44 +10,32 @@ use Tests\TestCase;
 use App\Models\User;
 use App\Models\Project;
 
-class ProjectsTest extends TestCase
+class ManageProjectsTest extends TestCase
 {
     use WithFaker, RefreshDatabase;
 
     /** @test */
-    public function guest_cannot_create_projects()
+    public function guest_cannot_manage_projects()
     {
         // Whenever an exception is thrown provide the full details
         //$this->withoutExceptionHandling();
 
         // Going to the factory to get the fields and overriding the field to be blank
-        $atrributes = Project::factory('App\Models\Project')->raw(['owner_id' => null]);
-
-        // Checking the the user and redirecting to login page if not authenticated
-        $this->post('/projects', $atrributes)->assertRedirect('login');
-    }
-
-    /** @test */
-    public function guest_cannot_view_projects()
-    {
-        // Whenever an exception is thrown provide the full details
-        //$this->withoutExceptionHandling();
-
-        // Checking if a non-authetnicated user can view projects
-        $this->get('/projects')->assertRedirect('login');
-    }
-
-    /** @test */
-    public function guest_cannot_view_a_single_projects()
-    {
-        // Whenever an exception is thrown provide the full details
-        //$this->withoutExceptionHandling();
-
-        // Creating a project
         $project = Project::factory('App\Models\Project')->create();
 
-        // Checking if a non-authetnicated user can view projects
+        // Checking if a non-authenticated user tried to access the general projects page
+        $this->get('/projects')->assertRedirect('login');
+
+        // Checking if a non-authenticated user tried to create a projects 
+        $this->get('/projects/create')->assertRedirect('login');
+
+        // Checking if a non-authenticated user tried to access a specific project page
         $this->get($project->path())->assertRedirect('login');
+
+        // Checking the the user and redirecting to login page if not authenticated
+        $this->post('/projects', $project->toArray())->assertRedirect('login');
+        
+        
     }
 
     /** @test */
