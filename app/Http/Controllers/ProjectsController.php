@@ -14,6 +14,11 @@ class ProjectsController extends Controller
         return view('projects.index', compact('projects'));
     }
 
+    public function create()
+    {
+        return view('projects.create');
+    }
+
     public function show(Project $project)
     {
         return view('projects.show', compact('project'));
@@ -28,11 +33,12 @@ class ProjectsController extends Controller
         ]);
 
         // More control over the id, allows for checks if someone tries to alter the request. Validation is now at the middlewear
-        $attributes['owner_id'] = auth()->id();
+        //$attributes['owner_id'] = auth()->id();
+        auth()->users()->projects()->create($attributes);
 
         // persist
         
-        Project::create($attributes);
+        //Project::create($attributes);
 
         // redirect
         

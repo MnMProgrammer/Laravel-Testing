@@ -24,6 +24,7 @@ Route::view('profile', 'profile')
     ->name('profile');
 
 Route::get('/projects', 'App\Http\Controllers\ProjectsController@index')->middleware(['auth'])->name('project.profile');
+Route::get('/projects/create', 'App\Http\Controllers\ProjectsController@create')->middleware(['auth'])->name('project.create');
 Route::get('/projects/{project}', 'App\Http\Controllers\ProjectsController@show')->middleware(['auth'])->name('project.show');
 Route::post('/projects', 'App\Http\Controllers\ProjectsController@store')->middleware(['auth'])->name('project.post');
 
